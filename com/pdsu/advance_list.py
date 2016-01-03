@@ -72,3 +72,34 @@ False
 请修改列表生成式，通过添加if语句保证列表生成式能正确地执行。
 '''
 print  [s.lower() if isinstance(s,str) else s for s in L]
+
+
+
+
+# 讨论
+'''
+从楼上lber19535提供的链接来看，如果要一定要区分两个表达式的类型的话，我有不同的意见。
+
+列表生成器
+
+comprehension ::=  expression comp_for
+comp_for      ::=  "for" target_list "in" or_test [comp_iter]
+comp_iter     ::=  comp_for | comp_if
+comp_if       ::=  "if" expression_nocond [comp_iter]
+条件表达式
+
+conditional_expression ::=  or_test ["if" or_test "else" expression]
+expression             ::=  conditional_expression | lambda_expr
+expression_nocond      ::=  or_test | lambda_expr_nocond
+看来条件表达式没有for。
+
+条件表达式 | lambda表达式 + for 是列表生成器的一种形式。
+
+L= [s.lower() if isinstance(s,str) else s for s in L]
+其中s.lower() if isinstance(s,str) else s是条件表达式，这是列表生成器。
+
+而另一个
+
+L= [s.lower() for s in L if isinstance(s,str) else s for s in L]
+其中s.lower() for s in L if isinstance(s,str) else s不是条件表达式，if isinstance(s,str) else s for s in L也不是条件表达式，而符合列表生成器的comp_if ::= "if" expression_nocond [comp_iter]。所以这也是列表生成器。
+'''
