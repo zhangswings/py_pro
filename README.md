@@ -2,6 +2,7 @@
 The way to learning python ,life is short ,please use python
 
 
+
 当你用一种语言开始作真正的软件开发时，你除了编写代码外，还需要很多基本的已经写好的现成的东西，来帮助你加快开发进度。比如说，要编写一个电子邮件客户端，如果先从最底层开始编写网络协议相关的代码，那估计一年半载也开发不出来。高级编程语言通常都会提供一个比较完善的基础代码库，让你能直接调用，比如，针对电子邮件协议的SMTP库，针对桌面环境的GUI库，在这些已有的代码库的基础上开发，一个电子邮件客户端几天就能开发出来。
 
 Python就为我们提供了非常完善的基础代码库，覆盖了网络、文件、GUI、数据库、文本等大量内容，被形象地称作“内置电池（batteries included）”。用Python开发，许多功能不必从零编写，直接使用现成的即可。
@@ -41,3 +42,48 @@ Python就为我们提供了非常完善的基础代码库，覆盖了网络、�
 哪有功夫破解你的烂代码
 
 当然，Python还有其他若干小缺点，请自行忽略，就不一一列举了。
+
+编写无参数decorator
+Python的 decorator 本质上就是一个高阶函数，它接收一个函数作为参数，然后，返回一个新函数。
+
+使用 decorator 用Python提供的 @ 语法，这样可以避免手动编写 f = decorate(f) 这样的代码。
+
+考察一个@log的定义：
+
+def log(f):
+    def fn(x):
+        print 'call ' + f.__name__ + '()...'
+        return f(x)
+    return fn
+对于阶乘函数，@log工作得很好：
+
+@log
+def factorial(n):
+    return reduce(lambda x,y: x*y, range(1, n+1))
+print factorial(10)
+结果：
+
+call factorial()...
+3628800
+但是，对于参数不是一个的函数，调用将报错：
+
+@log
+def add(x, y):
+    return x + y
+print add(1, 2)
+结果：
+
+Traceback (most recent call last):
+  File "test.py", line 15, in <module>
+    print add(1,2)
+TypeError: fn() takes exactly 1 argument (2 given)
+因为 add() 函数需要传入两个参数，但是 @log 写死了只含一个参数的返回函数。
+
+要让 @log 自适应任何参数定义的函数，可以利用Python的 *args 和 **kw，保证任意个数的参数总是能正常调用：
+
+def log(f):
+    def fn(*args, **kw):
+        print 'call ' + f.__name__ + '()...'
+        return f(*args, **kw)
+    return fn
+现在，对于任意函数，@log 都能正常工作。
