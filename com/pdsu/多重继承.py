@@ -63,7 +63,7 @@ class Runnable(object):
 
 class Flyable(object):
     def fly(self):
-        print('Flying...'
+        print('Flying...')
 
 
 # 对于需要Runnable功能的动物，就多继承一个Runnable，例如Dog：
