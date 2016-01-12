@@ -68,3 +68,9 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> hello.test()
 Hello, world!
 '''
+
+class Hello(object):
+    def hello(self, name='world'):
+        print('Hello, %s.' % name)
+        pass
+    pass
