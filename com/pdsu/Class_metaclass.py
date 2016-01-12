@@ -377,3 +377,7 @@ class User(Model):
 u = User(id=12345, name='Michael', email='test@orm.org', password='my-pwd')
 # 保存到数据库：
 u.save()
+
+# 不到100行代码，我们就通过metaclass实现了一个精简的ORM框架，完整的代码从这里下载：
+
+# https://github.com/michaelliao/learn-python/blob/master/metaclass/simple_orm.py
